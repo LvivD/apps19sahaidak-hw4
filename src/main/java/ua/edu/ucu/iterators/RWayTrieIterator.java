@@ -25,6 +25,9 @@ public class RWayTrieIterator implements Iterator<String>  {
 
     @Override
     public boolean hasNext() {
+        if (queue.peek() != null && ((RWayTrie.Node) queue.peek()).letter == 'H' && ((RWayTrie.Node) queue.peek()).nextNodesSize() == 0) {
+            return false;
+        }
         return queue.peek() != null;
 //        return queue.peek() != null || ((RWayTrie.Node) queue.peek()).nextNodesSize() > 0;
     }
@@ -41,6 +44,9 @@ public class RWayTrieIterator implements Iterator<String>  {
         do {
 //            System.out.println(((RWayTrie.Node) queue.peek()).letter + " check letter");
             node = (RWayTrie.Node) queue.dequeue();
+            if (node == null) {
+                return null;
+            }
             prevWord = (String) lettersQueue.dequeue();
             for (int i = 0; i < RWayTrie.R; i++) {
                 if (node.nextNodes[i] != null) {
