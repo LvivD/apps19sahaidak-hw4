@@ -46,6 +46,7 @@ public class PrefixMatches {
     public Iterable<String> wordsWithPrefix(String pref, int k) {
         if (pref.length() >= 2 && k > 0) {
             return RWayTrieWeightIterator.RWayTrieWeightIterable(this.trie, pref, k);
+//            return null;
         }
         return null;
     }

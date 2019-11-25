@@ -8,42 +8,46 @@ import java.util.Iterator;
 
 public class RWayTrieWeightIterator implements Iterator<String> {
 
-    private RWayTrieIterator iterator;
-    private Queue queue;
-    private Queue lettersQueue;
+    private Iterator<String> iterator;
+    private int k;
+    private String next;
 
-
-    public RWayTrieWeightIterator(Trie trie, String prefix, int k) {
-        iterator = trie.wordsWithPrefix(prefix) ;
+    public RWayTrieWeightIterator(Trie tree, String prefix, int key) {
+        iterator = tree.wordsWithPrefix(prefix).iterator();
+        if (iterator.hasNext()) {
+            next = iterator.next();
+        }
+        k = key - 1;
     }
 
     @Override
     public boolean hasNext() {
-        return queue.peek() != null;
+        return next != null;
     }
 
     @Override
     public String next() {
-        RWayTrie.Node node;
-        String prevWord;
-        if (queue.peek() == null) {
-            return null;
-        }
-        do {
-            node = (RWayTrie.Node) queue.dequeue();
-            prevWord = (String) lettersQueue.dequeue();
-            for (int i = 0; i < RWayTrie.R; i++) {
-                if (node.nextNodes[i] != null) {
-                    queue.enqueue(node.nextNodes[i]);
-                    lettersQueue.enqueue(prevWord + node.nextNodes[i].letter);
-                }
+        String toReturn = next;
+        if (iterator.hasNext() && k > 0) {
+            String newNext;
+            newNext = iterator.next();
+            if (newNext.length() != next.length()) {
+                k -= 1;
+            }
+            if (k >= 0) {
+                next = newNext;
+            }
+            else {
+                next = null;
             }
         }
-        while (node.weight == null);
-        return prevWord;
+        else {
+            next = null;
+        }
+        return toReturn;
     }
 
-    public static Iterable<String> RWayTrieWeightIterable(Trie trie, String prefix, int k) {
-        return () -> new RWayTrieWeightIterator(trie, prefix, k);
+    public static Iterable<String> RWayTrieWeightIterable(Trie tree, String prefix, int k) {
+        return () -> new RWayTrieWeightIterator(tree, prefix, k);
     }
 }
