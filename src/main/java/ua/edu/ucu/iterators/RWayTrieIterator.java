@@ -4,6 +4,7 @@ import ua.edu.ucu.tries.RWayTrie;
 import ua.edu.ucu.utils.Queue;
 
 import java.util.Iterator;
+import java.util.Map;
 
 public class RWayTrieIterator implements Iterator<String>  {
 
@@ -24,7 +25,7 @@ public class RWayTrieIterator implements Iterator<String>  {
 
     @Override
     public boolean hasNext() {
-        if (queue.peek() != null && ((RWayTrie.Node) queue.peek()).letter == 'H' && ((RWayTrie.Node) queue.peek()).nextNodesSize() == 0) {
+        if (queue.peek() != null && ((RWayTrie.Node) queue.peek()).letter == 'H' && ((RWayTrie.Node) queue.peek()).nextNodes.isEmpty()) {
             return false;
         }
         return queue.peek() != null;
@@ -43,11 +44,10 @@ public class RWayTrieIterator implements Iterator<String>  {
                 return null;
             }
             prevWord = (String) lettersQueue.dequeue();
-            for (int i = 0; i < RWayTrie.R; i++) {
-                if (node.nextNodes[i] != null) {
-                    queue.enqueue(node.nextNodes[i]);
-                    lettersQueue.enqueue(prevWord + node.nextNodes[i].letter);
-                }
+            for (Map.Entry nextMapElem: node.nextNodes.entrySet()) {
+                RWayTrie.Node nextNode = (RWayTrie.Node) nextMapElem.getValue();
+                queue.enqueue(nextNode);
+                lettersQueue.enqueue(prevWord + nextNode.letter);
             }
         }
         while (node.weight == null);
