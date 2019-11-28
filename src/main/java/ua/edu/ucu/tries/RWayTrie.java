@@ -18,7 +18,8 @@ public class RWayTrie implements Trie{
         public final char letter;
         public Object weight;
         public Node[] nextNodes;
-
+        public boolean last;
+        
         public Node(char letter) {
             this.letter = letter;
             this.nextNodes = new Node[R];

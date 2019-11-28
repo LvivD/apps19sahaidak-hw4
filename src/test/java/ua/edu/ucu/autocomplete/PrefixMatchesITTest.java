@@ -38,8 +38,24 @@ public class PrefixMatchesITTest {
         int k = 3;
 
         Iterable<String> result = pm.wordsWithPrefix(pref, k);
+        Iterable<String> result1 = pm.wordsWithPrefix(pref, k);
 
         String[] expResult = {"abc", "abce", "abcd", "abcde"};
+
+
+        assertThat(result, containsInAnyOrder(expResult));
+        assertThat(result1, containsInAnyOrder(expResult));
+    }
+
+    @Test
+    public void testWordsWithPrefixNew() {
+        String pref = "ab";
+        int k = 3;
+        pm.load("abcf", "abcff", "abcdefg", "abf", "abcfr");
+        Iterable<String> result = pm.wordsWithPrefix(pref, k);
+
+        String[] expResult = {"abc", "abce", "abcd", "abcde", "abcfr", "abcf", "abcff", "abf"};
+
 
         assertThat(result, containsInAnyOrder(expResult));
     }

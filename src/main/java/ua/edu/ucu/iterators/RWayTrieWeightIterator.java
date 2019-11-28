@@ -28,9 +28,10 @@ public class RWayTrieWeightIterator implements Iterator<String> {
     @Override
     public String next() {
         String toReturn = next;
-        if (iterator.hasNext() && k > 0) {
+        if (iterator.hasNext() && k >= 0) {
             String newNext;
             newNext = iterator.next();
+
             if (newNext.length() != next.length()) {
                 k -= 1;
             }
